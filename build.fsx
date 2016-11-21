@@ -16,8 +16,11 @@ let appSrcDir = "./src/"
 let testsBuildDir = "./build/tests/"
 let testsSrcDir = "./tests"
 
+let nugetBinDir = "./nuget/bin/"
+let nugetOutputDir = "./nuget/output/"
+
 let project = "Suave.IIS"
-let description = ""
+let description = "Set of helper functions for smooth running Suave web server on Internet Information Services (IIS)"
 
 // Read release notes & version info from RELEASE_NOTES.md
 let release = File.ReadLines "RELEASE_NOTES.md" |> ReleaseNotesHelper.parseReleaseNotes
@@ -76,6 +79,33 @@ Target "RunTests" (fun _ ->
         let dir = FileInfo(file).DirectoryName
         NUnit3 (fun p -> { p with ResultSpecs = [dir + "\TestResult.xml"]}) [file]
 )
+
+Target "Nuget" <| fun () ->
+    CreateDir nugetOutputDir
+    CreateDir nugetBinDir
+    let nugetFiles = [
+        "Suave.IIS.xml"
+        "Suave.IIS.dll"
+    ]
+    nugetFiles |> List.map (fun f -> appBuildDir + "Suave.IIS/" + f) |> CopyFiles nugetBinDir
+    
+    // Format the release notes
+    let releaseNotes = release.Notes |> String.concat "\n"
+    NuGet (fun p -> 
+        { p with   
+            Project = project
+            Description = description
+            Version = release.NugetVersion
+            ReleaseNotes = releaseNotes
+            OutputPath = nugetOutputDir
+            References = nugetFiles |> List.filter (fun x -> x.EndsWith(".dll"))
+            Files = nugetFiles |> List.map (fun f -> ("bin/" + f, Some("lib/net45"), None))
+            Dependencies =
+            [
+                "Suave", GetPackageVersion ("./packages") "Suave"
+            ]
+        })
+        "nuget/Suave.IIS.nuspec"
 
 // Dependencies
 "CleanTests" ==> "BuildTests"
