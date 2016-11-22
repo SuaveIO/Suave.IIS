@@ -9,7 +9,7 @@ let path (args:string []) p =
 /// IIS wrapper for Suave.Filters.pathScan function    
 let pathScan (args:string []) (pf:PrintfFormat<'a,'b,'c,'d,'t>)=
     match args |> Configuration.parseSetup with
-    | Some(setup)       ->  
+    | Some(setup)   -> 
         let newValue = "/" + setup.Path + pf.Value
         Suave.Filters.pathScan (PrintfFormat<'a,'b,'c,'d,'t>(newValue))
-    | None              ->  Suave.Filters.pathScan pf
+    | None              -> Suave.Filters.pathScan pf
