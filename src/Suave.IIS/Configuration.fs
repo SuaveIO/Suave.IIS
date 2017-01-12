@@ -17,5 +17,5 @@ let parseSetup (args:string []) =
 /// Set Suave port based on command line args setup
 let withPort (args:string []) config =
     match args |> parseSetup with
-    | Some(setup) -> { config with bindings=[HttpBinding.mk HTTP IPAddress.Any setup.Port]}
+    | Some(setup) -> { config with bindings=[HttpBinding.create HTTP IPAddress.Any setup.Port]}
     | None -> config

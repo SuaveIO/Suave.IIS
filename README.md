@@ -2,6 +2,7 @@
 
 Set of helper functions for smooth running [Suave.io](http://suave.io) web server on Internet Information Services (IIS) without common issues like problems with routing on sub-apps, etc...
 
+
 ## IIS Installation
 
 To host Suave.io web application, you need to install **HttpPlatformHandler** (IIS addon that allows to use any http serving application). To install it start the *Web Platform Installer* (either from your start menu or from the right side actions in IIS Manager) and search for it.
@@ -9,6 +10,8 @@ To host Suave.io web application, you need to install **HttpPlatformHandler** (I
 *Please note: To be able to enable it per-site, open IIS Manager and in the Feature View for the whole server, open Feature Delegation and enable Handlers Mappings as Read/Write.*
 
 ## Web application installation
+
+**Please note:** Currently **only Suave 2.x.x** version is supported. If you are running on older Suave, choose [Suave.IIS v1.0.0](https://www.nuget.org/packages/Suave.IIS/1.0.0).
 
 Ok, we got IIS ready, now let`s install Nuget package:
 
@@ -36,7 +39,7 @@ let main argv =
         ]
 
     // start service server
-    let config = { defaultConfig with bindings=[HttpBinding.mk HTTP IPAddress.Any 8083us]; } |> Suave.IIS.Configuration.withPort argv
+    let config = { defaultConfig with bindings=[HttpBinding.create HTTP IPAddress.Any 8083us]; } |> Suave.IIS.Configuration.withPort argv
     startWebServer config webpart
     0
 

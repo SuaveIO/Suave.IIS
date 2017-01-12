@@ -31,11 +31,10 @@ Target "?" (fun _ ->
     printfn " *        Available options (call 'build <Target>')      *"
     printfn " *********************************************************"
     printfn " [Build]"
-    printfn "  > BuildTests"
     printfn "  > BuildApp"
     printfn " "
-    printfn " [Run]"
-    printfn "  > RunTests"
+    printfn " [Deploy]"
+    printfn "  > Nuget"
     printfn " "
     printfn " [Help]"
     printfn "  > ?"
@@ -58,26 +57,10 @@ Target "CleanApp" (fun _ ->
     CleanDir appBuildDir
 )
 
-Target "CleanTests" (fun _ ->
-    CleanDir testsBuildDir
-)
-
 Target "BuildApp" (fun _ ->
     for file in !! (appSrcDir + "**/*.fsproj") do
         let dir = appBuildDir + FileInfo(file).Directory.Name
         MSBuildRelease dir "Build" [file] |> Log "Build-Output:"
-)
-
-Target "BuildTests" (fun _ ->
-    for file in !! (testsSrcDir + "/**/*.fsproj") do
-        let dir = testsBuildDir + FileInfo(file).Directory.Name
-        MSBuildRelease dir "Build" [file] |> Log "TestBuild-Output:"
-)
-
-Target "RunTests" (fun _ ->
-    for file in !! (testsBuildDir + "**/*.Tests.dll") do
-        let dir = FileInfo(file).DirectoryName
-        NUnit3 (fun p -> { p with ResultSpecs = [dir + "\TestResult.xml"]}) [file]
 )
 
 Target "Nuget" <| fun () ->
@@ -108,9 +91,8 @@ Target "Nuget" <| fun () ->
         "nuget/Suave.IIS.nuspec"
 
 // Dependencies
-"CleanTests" ==> "BuildTests"
-"BuildTests"  ==> "RunTests"
 "CleanApp" ==> "AssemblyInfo" ==> "BuildApp"
+"BuildApp" ==> "Nuget"
 
 
 // start build
