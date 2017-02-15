@@ -6,9 +6,9 @@
     <version>@build.number@</version>
     <authors>Roman Provaznik</authors>
     <owners>Roman Provaznik</owners>
-    <licenseUrl>http://github.com/dzoukr/Suave.IIS/blob/master/LICENSE</licenseUrl>
-    <projectUrl>http://github.com/dzoukr/Suave.IIS</projectUrl>
-    <iconUrl>https://avatars2.githubusercontent.com/u/851307?v=3&amp;s=64</iconUrl>
+    <licenseUrl>https://github.com/SuaveIO/suave/blob/master/COPYING</licenseUrl>
+    <projectUrl>https://github.com/SuaveIO/Suave.IIS</projectUrl>
+    <iconUrl>https://raw.githubusercontent.com/SuaveIO/resources/master/images/head_trans.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <summary>Set of helper functions for smooth running Suave web server on Internet Information Services (IIS)</summary>
     <description>@description@</description>

@@ -75,6 +75,30 @@ Now create new web application on IIS:
 
 Copy all your build files into `C:\inetpub\wwwroot\myiiswebnamemyiiswebname` and navigate to `http://localhost/myiiswebname`. You should see your web application output now.
 
+## IIS Site
+
+If you need to run Suave application as Site (on default port 80 or any other port), just **omit second parameter** in arguments attribute of httpPlatformHandler section in `web.config` file:
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+  <system.webServer>
+    <handlers>
+      <remove name="httpplatformhandler" />
+      <add name="httpplatformhandler" path="*" verb="*" modules="httpPlatformHandler" resourceType="Unspecified"/>
+    </handlers>
+    <httpPlatform
+                  forwardWindowsAuthToken="true"
+                  stdoutLogEnabled="true"
+                  stdoutLogFile="myiiswebname.log"
+                  startupTimeLimit="20"
+                  processPath="C:\inetpub\wwwroot\myiiswebname\myiiswebname.exe"
+                  arguments="%HTTP_PLATFORM_PORT%"/>
+                  <!-- now running on http://localhost/ -->
+  </system.webServer>
+</configuration>
+```
+
 ## Good to know
 
 1. Maybe you didn\`t notice, but using this library, you can still run Suave localy (from Visual Studio hitting F5 or FAKE script) - it there are no command line arguments, default setup is used, so you don\`t need to change anything. Just use `withPort` and create custom filter functions based on `Suave.IIS.Configuration`.

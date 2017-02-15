@@ -1,3 +1,7 @@
+#### 2.1.0 - February 15 2017
+* Added support for running Suave as IIS Site
+* Configuration Setup path is now optional
+
 #### 2.0.0 - January 12 2017
 * Added support for Suave 2.0 
 * Support for lower Suave version dropped because of breaking changes in API

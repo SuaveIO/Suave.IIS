@@ -9,5 +9,5 @@ NUGET
     NuGet.CommandLine (3.4.3)
     NUnit (3.5)
     NUnit.ConsoleRunner (3.5)
-    Suave (2.0)
+    Suave (2.0.3)
       FSharp.Core (>= 4.0.0.1)
