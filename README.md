@@ -5,9 +5,11 @@ Set of helper functions for smooth running [Suave.io](http://suave.io) web serve
 
 ## IIS Installation
 
-To host Suave.io web application, you need to install **HttpPlatformHandler** (IIS addon that allows to use any http serving application). To install it start the *Web Platform Installer* (either from your start menu or from the right side actions in IIS Manager) and search for it.
+*Please note: HttpPlatformHandler was replaced by AspNetCoreModule (see the [announcement](https://github.com/aspnet/Announcements/issues/164)) so it is recommended to use this module.
 
-*Please note: To be able to enable it per-site, open IIS Manager and in the Feature View for the whole server, open Feature Delegation and enable Handlers Mappings as Read/Write.*
+To host Suave.io web application, you need to use **AspNetCoreModule** (allows to use IIS as reverse proxy serving any application). This module should be available on IIS automatically.
+If not, please proceed to [AspNetCoreModule official GitHub page](https://github.com/aspnet/AspNetCoreModule)
+
 
 ## Web application installation
 
@@ -52,17 +54,17 @@ The last thing we need for proper run on IIS is `web.config`
 <configuration>
   <system.webServer>
     <handlers>
-      <remove name="httpplatformhandler" />
-      <add name="httpplatformhandler" path="*" verb="*" modules="httpPlatformHandler" resourceType="Unspecified"/>
+      <add name="aspNetCore" path="*" verb="*" modules="AspNetCoreModule" resourceType="Unspecified" />
     </handlers>
-    <httpPlatform
-                  forwardWindowsAuthToken="true"
-                  stdoutLogEnabled="true"
-                  stdoutLogFile="myiiswebname.log"
-                  startupTimeLimit="20"
-                  processPath="C:\inetpub\wwwroot\myiiswebname\myiiswebname.exe"
-                  arguments="%HTTP_PLATFORM_PORT% &quot;myiiswebname&quot;"/>
-                  <!-- if running on http://localhost/myiiswebname -->
+    <aspNetCore
+		forwardWindowsAuthToken="true"
+        startupTimeLimit="20"
+        stdoutLogEnabled="true"
+        stdoutLogFile="myiiswebname.log"
+		processPath="C:\inetpub\wwwroot\myiiswebname\myiiswebname.exe"
+        arguments="%ASPNETCORE_PORT% &quot;myiiswebname&quot;">
+		<!-- if running on http://localhost/myiiswebname -->
+    </aspNetCore>
   </system.webServer>
 </configuration>
 ```
@@ -84,17 +86,17 @@ If you need to run Suave application as Site (on default port 80 or any other po
 <configuration>
   <system.webServer>
     <handlers>
-      <remove name="httpplatformhandler" />
-      <add name="httpplatformhandler" path="*" verb="*" modules="httpPlatformHandler" resourceType="Unspecified"/>
+      <add name="aspNetCore" path="*" verb="*" modules="AspNetCoreModule" resourceType="Unspecified" />
     </handlers>
-    <httpPlatform
-                  forwardWindowsAuthToken="true"
-                  stdoutLogEnabled="true"
-                  stdoutLogFile="myiiswebname.log"
-                  startupTimeLimit="20"
-                  processPath="C:\inetpub\wwwroot\myiiswebname\myiiswebname.exe"
-                  arguments="%HTTP_PLATFORM_PORT%"/>
-                  <!-- now running on http://localhost/ -->
+    <aspNetCore
+		forwardWindowsAuthToken="true"
+        startupTimeLimit="20"
+        stdoutLogEnabled="true"
+        stdoutLogFile="myiiswebname.log"
+		processPath="C:\inetpub\wwwroot\myiiswebname\myiiswebname.exe"
+        arguments="%ASPNETCORE_PORT%">
+        <!-- now running on http://localhost/ -->
+    </aspNetCore>
   </system.webServer>
 </configuration>
 ```
