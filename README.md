@@ -5,7 +5,7 @@ Set of helper functions for smooth running [Suave.io](http://suave.io) web serve
 
 ## IIS Installation
 
-*Please note: HttpPlatformHandler was replaced by AspNetCoreModule (see the [announcement](https://github.com/aspnet/Announcements/issues/164)) so it is recommended to use this module.
+*Please note:** HttpPlatformHandler was replaced by AspNetCoreModule (see the [announcement](https://github.com/aspnet/Announcements/issues/164)) so it is recommended to use this module.
 
 To host Suave.io web application, you need to use **AspNetCoreModule** (allows to use IIS as reverse proxy serving any application). This module should be available on IIS automatically.
 If not, please proceed to [AspNetCoreModule official GitHub page](https://github.com/aspnet/AspNetCoreModule)
@@ -95,7 +95,7 @@ If you need to run Suave application as Site (on default port 80 or any other po
         stdoutLogFile="myiiswebname.log"
 		processPath="C:\inetpub\wwwroot\myiiswebname\myiiswebname.exe"
         arguments="%ASPNETCORE_PORT%">
-        <!-- now running on http://localhost/ -->
+		<!-- now running on http://localhost/ -->
     </aspNetCore>
   </system.webServer>
 </configuration>
