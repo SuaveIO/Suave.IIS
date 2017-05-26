@@ -5,7 +5,7 @@ Set of helper functions for smooth running [Suave.io](http://suave.io) web serve
 
 ## IIS Installation
 
-*Please note:** HttpPlatformHandler was replaced by AspNetCoreModule (see the [announcement](https://github.com/aspnet/Announcements/issues/164)) so it is recommended to use this module.
+**Please note:** HttpPlatformHandler was replaced by AspNetCoreModule (see the [announcement](https://github.com/aspnet/Announcements/issues/164)) so it is recommended to use this module.
 
 To host Suave.io web application, you need to use **AspNetCoreModule** (allows to use IIS as reverse proxy serving any application). This module should be available on IIS automatically.
 If not, please proceed to [AspNetCoreModule official GitHub page](https://github.com/aspnet/AspNetCoreModule)
@@ -57,13 +57,13 @@ The last thing we need for proper run on IIS is `web.config`
       <add name="aspNetCore" path="*" verb="*" modules="AspNetCoreModule" resourceType="Unspecified" />
     </handlers>
     <aspNetCore
-		forwardWindowsAuthToken="true"
+	forwardWindowsAuthToken="true"
         startupTimeLimit="20"
         stdoutLogEnabled="true"
         stdoutLogFile="myiiswebname.log"
-		processPath="C:\inetpub\wwwroot\myiiswebname\myiiswebname.exe"
+	processPath="C:\inetpub\wwwroot\myiiswebname\myiiswebname.exe"
         arguments="%ASPNETCORE_PORT% &quot;myiiswebname&quot;">
-		<!-- if running on http://localhost/myiiswebname -->
+	<!-- if running on http://localhost/myiiswebname -->
     </aspNetCore>
   </system.webServer>
 </configuration>
@@ -89,13 +89,13 @@ If you need to run Suave application as Site (on default port 80 or any other po
       <add name="aspNetCore" path="*" verb="*" modules="AspNetCoreModule" resourceType="Unspecified" />
     </handlers>
     <aspNetCore
-		forwardWindowsAuthToken="true"
+	forwardWindowsAuthToken="true"
         startupTimeLimit="20"
         stdoutLogEnabled="true"
         stdoutLogFile="myiiswebname.log"
-		processPath="C:\inetpub\wwwroot\myiiswebname\myiiswebname.exe"
+	processPath="C:\inetpub\wwwroot\myiiswebname\myiiswebname.exe"
         arguments="%ASPNETCORE_PORT%">
-		<!-- now running on http://localhost/ -->
+	<!-- now running on http://localhost/ -->
     </aspNetCore>
   </system.webServer>
 </configuration>
