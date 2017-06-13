@@ -1,5 +1,11 @@
 ﻿module Suave.IIS.Filters
 
+/// IIS wrapper for Suave.Filters.pathStarts function
+let pathStarts (args:string []) p =
+    match args |> Configuration.parseSetup with
+    | Some({Path = Some setupPath}) -> Suave.Filters.pathStarts <| sprintf "/%s%s" setupPath p
+    | _ -> Suave.Filters.pathStarts p
+
 /// IIS wrapper for Suave.Filters.path function
 let path (args:string []) p =
     match args |> Configuration.parseSetup with
