@@ -32,12 +32,15 @@ let main argv =
     // use IIS related filter functions
     let path st = Suave.IIS.Filters.path argv st
     let pathScan format = Suave.IIS.Filters.pathScan argv format
+	let pathStarts st = Suave.IIS.Filters.pathStarts argv st
 
     // routes
     let webpart =
     	choose [
-        	path "/test" >=> OK "Look ma! Routing on sub-app on localhost"
+        	pathStarts "/st" >=> OK "Path starts with '/st'"
+			path "/test" >=> OK "Look ma! Routing on sub-app on localhost"
             path "/" >=> OK "Hello from Suave on IIS"
+
         ]
 
     // start service server
@@ -104,5 +107,5 @@ If you need to run Suave application as Site (on default port 80 or any other po
 ## Good to know
 
 1. Maybe you didn\`t notice, but using this library, you can still run Suave locally (from Visual Studio hitting F5 or FAKE script) - it there are no command line arguments, default setup is used, so you don\`t need to change anything. Just use `withPort` and create custom filter functions based on `Suave.IIS.Configuration`.
-2. Only few (two, actually :)) filter functions are wrapped in `Suave.IIS.Filters`. If you need more of them, please feel free to send PR.
+2. Only few (three, actually :)) filter functions are wrapped in `Suave.IIS.Filters`. If you need more of them, please feel free to send PR.
 

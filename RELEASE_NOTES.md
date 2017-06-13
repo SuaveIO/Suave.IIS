@@ -1,3 +1,6 @@
+#### 2.2.0 - June 13 2017
+* Added filter function pathStarts (thanks to @toburger!)
+
 #### 2.1.0 - February 15 2017
 * Added support for running Suave as IIS Site
 * Configuration Setup path is now optional

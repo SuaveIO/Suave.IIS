@@ -10,6 +10,7 @@ let main argv =
     // use IIS related filter functions
     let path st = Suave.IIS.Filters.path argv st
     let pathScan format = Suave.IIS.Filters.pathScan argv format
+    let pathStarts st = Suave.IIS.Filters.pathStarts argv st
 
 
     let length = argv |> Array.length |> string
@@ -17,6 +18,7 @@ let main argv =
     // routes
     let webpart =
         choose [
+            pathStarts "/st" >=> OK "Path starts with '/st'"
             path "/TextFile.txt" >=> Files.browseFileHome "TextFile.txt"
             path "/test" >=> OK "Look ma! Routing on sub-app on localhost"
             path "/" >=> OK "Hello from Suave on IIS"
