@@ -32,7 +32,7 @@ let main argv =
     // use IIS related filter functions
     let path st = Suave.IIS.Filters.path argv st
     let pathScan format = Suave.IIS.Filters.pathScan argv format
-	let pathStarts st = Suave.IIS.Filters.pathStarts argv st
+    let pathStarts st = Suave.IIS.Filters.pathStarts argv st
 
     // routes
     let webpart =
