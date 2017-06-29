@@ -33,10 +33,10 @@ let parsePort port =
 
 /// Parse configuration setup from command line args
 let parseSetup (args:string []) =
-    match args |> Array.length with
-    | x when x = 2 -> { Port = parsePort args.[0]; Path = Some args.[1] } |> Some
-    | x when x = 1 -> { Port = parsePort args.[0]; Path = None } |> Some
-    | _  -> None
+    match args with
+    | [| port; path |] -> { Port = parsePort port; Path = Some path } |> Some
+    | [| port |] -> { Port = parsePort port; Path = None } |> Some
+    | _ -> None
 
 /// Set Suave port based on command line args setup
 let withPort (args:string []) config =
