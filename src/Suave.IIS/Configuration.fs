@@ -9,24 +9,24 @@ type Setup = {
     Path: string option
 }
 
-let tryGetPortFromEnv () =
+let private tryGetPortFromEnv () =
     match Environment.GetEnvironmentVariable "ASPNETCORE_PORT" with
     | null -> None
     | port -> Some port
 
-let tryParsePort port =
+let private tryParsePort port =
     match UInt16.TryParse port with
     | true, port -> Some port
     | false, _ -> None
 
-let tryReadPort port =
+let private tryReadPort port =
     match tryParsePort port with
     | Some port -> Some port
     | None ->
         tryGetPortFromEnv ()
         |> Option.bind tryParsePort
 
-let parsePort port =
+let private parsePort port =
     match tryReadPort port with
     | Some port -> port
     | None -> failwithf "Please provide a valid port as the first argument: %s" port

@@ -1,3 +1,6 @@
+#### 2.3.0 - July 10 2017
+* Support for AspNetCore module reading port setup from ENV variable (if not available as direct argument) (thanks to @toburger!)
+
 #### 2.2.0 - June 13 2017
 * Added filter function pathStarts (thanks to @toburger!)
 
