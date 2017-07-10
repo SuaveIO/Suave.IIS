@@ -43,7 +43,7 @@ let main argv =
     let webpart =
     	choose [
             pathStarts "/st" >=> OK "Path starts with '/st'"
-		    path "/test" >=> OK "Look ma! Routing on sub-app on localhost"
+            path "/test" >=> OK "Look ma! Routing on sub-app on localhost"
             path "/" >=> OK "Hello from Suave on IIS"
         ]
 
@@ -67,13 +67,13 @@ The last thing we need for proper run on IIS is `web.config`
       <add name="httpplatformhandler" path="*" verb="*" modules="httpPlatformHandler" resourceType="Unspecified"/>
     </handlers>
     <httpPlatform
-                  forwardWindowsAuthToken="true"
-                  stdoutLogEnabled="true"
-                  stdoutLogFile="myiiswebname.log"
-                  startupTimeLimit="20"
-                  processPath="C:\inetpub\wwwroot\myiiswebname\myiiswebname.exe"
-                  arguments="%HTTP_PLATFORM_PORT% &quot;myiiswebname&quot;"/>
-                  <!-- now running on http://localhost/myiiswebname -->
+        forwardWindowsAuthToken="true"
+        stdoutLogEnabled="true"
+        stdoutLogFile="myiiswebname.log"
+        startupTimeLimit="20"
+        processPath="C:\inetpub\wwwroot\myiiswebname\myiiswebname.exe"
+        arguments="%HTTP_PLATFORM_PORT% &quot;myiiswebname&quot;"/>
+  <!-- now running on http://localhost/myiiswebname -->
   </system.webServer>
 </configuration>
 ```
@@ -123,13 +123,13 @@ If you need to run Suave application as Site (on default port 80 or any other po
       <add name="httpplatformhandler" path="*" verb="*" modules="httpPlatformHandler" resourceType="Unspecified"/>
     </handlers>
     <httpPlatform
-                  forwardWindowsAuthToken="true"
-                  stdoutLogEnabled="true"
-                  stdoutLogFile="myiiswebname.log"
-                  startupTimeLimit="20"
-                  processPath="C:\inetpub\wwwroot\myiiswebname\myiiswebname.exe"
-                  arguments="%HTTP_PLATFORM_PORT%"/>
-                  <!-- now running on http://localhost/ -->
+        forwardWindowsAuthToken="true"
+        stdoutLogEnabled="true"
+        stdoutLogFile="myiiswebname.log"
+        startupTimeLimit="20"
+        processPath="C:\inetpub\wwwroot\myiiswebname\myiiswebname.exe"
+        arguments="%HTTP_PLATFORM_PORT%"/>
+  <!-- now running on http://localhost/ -->
   </system.webServer>
 </configuration>
 ```
