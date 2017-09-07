@@ -106,7 +106,7 @@ Now create new web application on IIS:
 
 ![IIS new web app](./docs/iis_newapp.png)
 
-Copy all your build files into `C:\inetpub\wwwroot\myiiswebnamemyiiswebname` and navigate to `http://localhost/myiiswebname`. You should see your web application output now.
+Copy all your build files into `C:\inetpub\wwwroot\myiiswebname` and navigate to `http://localhost/myiiswebname`. You should see your web application output now.
 
 ## IIS Site
 
@@ -154,6 +154,24 @@ If you need to run Suave application as Site (on default port 80 or any other po
     </aspNetCore>
   </system.webServer>
 </configuration>
+```
+
+## Suave.IIS on .NET Core
+
+All the previous things are exactly the same (for both IIS Site & IIS Application), but there is little change in `web.config` file.
+
+For IIS Site:
+
+```xml
+processPath="dotnet"
+arguments="C:\inetpub\wwwroot\myiiswebname\myiiswebname.exe %ASPNETCORE_PORT%"
+```
+
+or IIS Application:
+
+```xml
+processPath="dotnet"
+arguments="C:\inetpub\wwwroot\myiiswebname\myiiswebname.exe %ASPNETCORE_PORT% &quot;myiiswebname&quot;"
 ```
 
 ## Good to know

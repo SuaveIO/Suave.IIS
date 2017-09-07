@@ -1,5 +1,6 @@
 // include Fake lib
 #I "packages/FAKE/tools/"
+
 #r "FakeLib.dll"
 
 open System
@@ -9,91 +10,47 @@ open Fake.AssemblyInfoFile
 open System.Diagnostics
 open Fake.Testing
 
-let title = "Suave.IIS"
-
-let appBuildDir = "./build/app/"
-let appSrcDir = "./src/"
-let testsBuildDir = "./build/tests/"
-let testsSrcDir = "./tests"
-
-let nugetBinDir = "./nuget/bin/"
-let nugetOutputDir = "./nuget/output/"
-
-let project = "Suave.IIS"
-let description = "Set of helper functions for smooth running Suave web server on Internet Information Services (IIS)"
+let appSrc = "src/Suave.IIS"
+let testAppSrc = "tests/Suave.IIS.TestApp"
 
 // Read release notes & version info from RELEASE_NOTES.md
 let release = File.ReadLines "RELEASE_NOTES.md" |> ReleaseNotesHelper.parseReleaseNotes
 
-// Targets
-Target "?" (fun _ ->
-    printfn " *********************************************************"
-    printfn " *        Available options (call 'build <Target>')      *"
-    printfn " *********************************************************"
-    printfn " [Build]"
-    printfn "  > BuildApp"
-    printfn " "
-    printfn " [Deploy]"
-    printfn "  > Nuget"
-    printfn " "
-    printfn " [Help]"
-    printfn "  > ?"
-    printfn " "
-    printfn " *********************************************************"
-)
+Target "Nuget" <| fun () ->
+    let toNotes = List.map (fun x -> x + System.Environment.NewLine) >> List.fold (+) ""
+    let args = 
+        [
+            "PackageId=\"Suave.IIS\""
+            "Title=\"Suave.IIS\""
+            "Description=\"Set of helper functions for smooth running Suave web server on Internet Information Services (IIS)\""
+            sprintf "PackageVersion=\"%s\"" release.NugetVersion
+            sprintf "PackageReleaseNotes=\"%s\"" (release.Notes |> toNotes)
+            "PackageLicenseUrl=\"https://github.com/SuaveIO/suave/blob/master/COPYING\""
+            "PackageProjectUrl=\"https://github.com/SuaveIO/Suave.IIS\""
+            "PackageIconUrl=\"https://raw.githubusercontent.com/SuaveIO/resources/master/images/head_trans.png\""
+            "PackageTags=\"Suave IIS Internet Information Services\""
+            "Copyright=\"Roman Provazník - 2017\""
+            "Authors=\"Roman Provazník\""
+        ] |> List.map (fun x -> "/p:" + x)
 
-Target "AssemblyInfo" <| fun () ->
-    for file in !! ("./src/**/AssemblyInfo*.fs") do
-        let version = release.AssemblyVersion
-        let dirName = FileInfo(file).Directory.Name
-        CreateFSharpAssemblyInfo file
-           [ Attribute.Title dirName
-             Attribute.Product title
-             Attribute.Description description
-             Attribute.Version version
-             Attribute.FileVersion version]
 
-Target "CleanApp" (fun _ ->
-    CleanDir appBuildDir
-)
+    Fake.DotNetCli.Pack (fun p -> { p with Project = appSrc; OutputPath = "../../nuget"; AdditionalArgs = args })
 
 Target "BuildApp" (fun _ ->
-    for file in !! (appSrcDir + "**/*.fsproj") do
-        let dir = appBuildDir + FileInfo(file).Directory.Name
-        MSBuildRelease dir "Build" [file] |> Log "Build-Output:"
+    Fake.DotNetCli.Build (fun p -> { p with Project = appSrc; Configuration = "Debug";})
 )
 
-Target "Nuget" <| fun () ->
-    CreateDir nugetOutputDir
-    CreateDir nugetBinDir
-    let nugetFiles = [
-        "Suave.IIS.xml"
-        "Suave.IIS.dll"
-    ]
-    nugetFiles |> List.map (fun f -> appBuildDir + "Suave.IIS/" + f) |> CopyFiles nugetBinDir
-    
-    // Format the release notes
-    let releaseNotes = release.Notes |> String.concat "\n"
-    NuGet (fun p -> 
-        { p with   
-            Project = project
-            Description = description
-            Version = release.NugetVersion
-            ReleaseNotes = releaseNotes
-            OutputPath = nugetOutputDir
-            References = nugetFiles |> List.filter (fun x -> x.EndsWith(".dll"))
-            Files = nugetFiles |> List.map (fun f -> ("bin/" + f, Some("lib/net45"), None))
-            Dependencies =
-            [
-                "Suave", GetPackageVersion ("./packages") "Suave"
-            ]
-        })
-        "nuget/Suave.IIS.nuspec"
+Target "BuildTestApp" (fun _ ->
+    Fake.DotNetCli.Publish (fun p -> { p with Project = testAppSrc; Configuration = "Release" })
+)
 
-// Dependencies
-"CleanApp" ==> "AssemblyInfo" ==> "BuildApp"
-"BuildApp" ==> "Nuget"
+Target "Clean" (fun _ -> 
+    DeleteDir (appSrc + "/bin")
+    DeleteDir (appSrc + "/obj")
+    DeleteDir "nuget" 
+)
 
+"Clean" ==>  "Nuget"
 
 // start build
-RunTargetOrDefault "?"
+RunTargetOrDefault "BuildApp"
