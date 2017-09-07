@@ -1,3 +1,6 @@
+#### 2.4.0 - September 07 2017
+* Support for .NETStandard 1.6 and .NET461
+
 #### 2.3.0 - July 10 2017
 * Support for AspNetCore module reading port setup from ENV variable (if not available as direct argument) (thanks to @toburger!)
 
